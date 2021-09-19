@@ -1,7 +1,11 @@
 #PROJECT DEPLOYMENT
+
 1.clone
+
 2.npm i
+
 3.create config directory with config.json file in project root
+
 config.json file example
 
 {
