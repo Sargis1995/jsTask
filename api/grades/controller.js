@@ -1,4 +1,5 @@
 import GradesService from "../../services/grades";
+import StudentsService from "../../services/students";
 import Tools from "../../helpers/tools";
 
 class GradesController {
@@ -10,6 +11,17 @@ class GradesController {
 
             if ( !Tools.checkKeyExistAndNotEmpty( req.body, checkData ) ) {
                 return res.json( { "payload": null, "error": { "code": 400, "message": "wrong data" } } );
+            }
+
+            // eslint-disable-next-line one-var
+            const checkStudentClass = await StudentsService.checkClazz( {
+                "studentId": req.body.studentId,
+                "clazzId": req.body.clazzId
+            } );
+
+            console.log( "checkStudentClass -- ", checkStudentClass.payload );
+            if ( checkStudentClass.error ) {
+                return res.json( { "payload": null, "error": { "code": 400, "message": "wrong clazzId" } } );
             }
 
             // eslint-disable-next-line one-var

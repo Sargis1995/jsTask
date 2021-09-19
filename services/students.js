@@ -163,5 +163,35 @@ class StudentsService {
         }
     }
 
+    static async checkClazz( data ) {
+        try {
+            const check = await Students.findOne( {
+                "where": { "id": data.studentId },
+                "attributes": [ "id",
+                    [ Sequelize.col( "clazz.name" ), "clazzName" ]
+                ],
+                "include": [
+                    {
+                        "model": Clazzes,
+                        "as": "clazz",
+                        "where": { "id": data.clazzId }
+                    }
+                ]
+            } );
+
+            if ( check ) {
+                return {
+                    "payload": check,
+                    "error": null
+                };
+            }
+
+            return { "payload": null, "error": { "code": 400, "message": "Something went wrong" } } ;
+        } catch ( error ) {
+            console.log( "error in clazz check service --  ", error );
+            return { "payload": null, "error": { "code": 400, "message": "Something went wrong" } } ;
+        }
+    }
+
 }
 export default StudentsService;
